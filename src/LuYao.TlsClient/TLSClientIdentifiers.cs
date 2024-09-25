@@ -1,0 +1,57 @@
+﻿namespace LuYao.TlsClient;
+
+public static class TLSClientIdentifiers
+{
+    public static string Default => Chrome_124;
+    public const string Chrome_103 = "chrome_103";
+    public const string Chrome_104 = "chrome_104";
+    public const string Chrome_105 = "chrome_105";
+    public const string Chrome_106 = "chrome_106";
+    public const string Chrome_107 = "chrome_107";
+    public const string Chrome_108 = "chrome_108";
+    public const string Chrome_109 = "chrome_109";
+    public const string Chrome_110 = "chrome_110";
+    public const string Chrome_111 = "chrome_111";
+    public const string Chrome_112 = "chrome_112";
+    public const string Chrome_116_PSK = "chrome_116_PSK";
+    public const string Chrome_116_PSK_PQ = "chrome_116_PSK_PQ";
+    public const string Chrome_117 = "chrome_117";
+    public const string Chrome_120 = "chrome_120";
+    public const string Chrome_124 = "chrome_124";
+    public const string Safari_15_6_1 = "safari_15_6_1";
+    public const string Safari_16_0 = "safari_16_0";
+    public const string Safari_Ipad_15_6 = "safari_ipad_15_6";
+    public const string Safari_IOS_15_5 = "safari_ios_15_5";
+    public const string Safari_IOS_15_6 = "safari_ios_15_6";
+    public const string Safari_IOS_16_0 = "safari_ios_16_0";
+    public const string Firefox_102 = "firefox_102";
+    public const string Firefox_104 = "firefox_104";
+    public const string Firefox_105 = "firefox_105";
+    public const string Firefox_106 = "firefox_106";
+    public const string Firefox_108 = "firefox_108";
+    public const string Firefox_110 = "firefox_110";
+    public const string Opera_89 = "opera_89";
+    public const string Opera_90 = "opera_90";
+    public const string Opera_91 = "opera_91";
+    public const string ZalandoAndroidMobile = "zalando_android_mobile";
+    public const string ZalandoIosMobile = "zalando_ios_mobile";
+    public const string NikeIosMobile = "nike_ios_mobile";
+    public const string NikeAndroidMobile = "nike_android_mobile";
+    public const string CloudflareCustom = "cloudscraper";
+    public const string MMSIos = "mms_ios";
+    public const string MeshIos = "mesh_ios";
+    public const string MeshIos1 = "mesh_ios_1";
+    public const string MeshIos2 = "mesh_ios_2";
+    public const string MeshAndroid = "mesh_android";
+    public const string MeshAndroid1 = "mesh_android_1";
+    public const string MeshAndroid2 = "mesh_android_2";
+    public const string ConfirmedIos = "confirmed_ios";
+    public const string ConfirmedAndroid = "confirmed_android";
+    public const string Okhttp4Android7 = "okhttp4_android_7";
+    public const string Okhttp4Android8 = "okhttp4_android_8";
+    public const string Okhttp4Android9 = "okhttp4_android_9";
+    public const string Okhttp4Android10 = "okhttp4_android_10";
+    public const string Okhttp4Android11 = "okhttp4_android_11";
+    public const string Okhttp4Android12 = "okhttp4_android_12";
+    public const string Okhttp4Android13 = "okhttp4_android_13";
+}

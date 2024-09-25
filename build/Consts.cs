@@ -4,7 +4,8 @@ using System.Text;
 
 namespace LuYao.TlsClient;
 
-internal static class Consts
+public static class Consts
 {
+    public const string DllName = "tls-client";
     public static string RuntimeVersion => "v1.7.8";
 }
