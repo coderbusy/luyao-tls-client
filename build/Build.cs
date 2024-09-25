@@ -15,6 +15,13 @@ using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
+[ShutdownDotNetAfterServerBuild]
+[GitHubActions(
+    "continuous",
+    GitHubActionsImage.WindowsServer2022,
+    On = new[] { GitHubActionsTrigger.Push },
+    FetchDepth = 0,
+    InvokedTargets = new[] { nameof(Compile) })]
 partial class Build : NukeBuild
 {
 
