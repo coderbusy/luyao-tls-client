@@ -7,6 +7,15 @@ namespace LuYao.TlsClient;
 
 public class TlsClient : IDisposable
 {
+    public RequestCreatingEventHandler? RequestCreating;
+    protected virtual void OnRequestCreating(RequestInput input)
+    {
+        if (RequestCreating != null)
+        {
+            var args = new RequestCreatingEventArgs(input);
+            RequestCreating?.Invoke(this, args);
+        }
+    }
     public String SessionId { get; }
     public String? Proxy { get; set; }
     public Boolean FollowRedirect { get; set; }
@@ -17,6 +26,7 @@ public class TlsClient : IDisposable
     public Boolean StreamOutput { get; set; }
     public TimeSpan Timeout { get; set; } = TimeSpan.Zero;
     public Boolean WithDebug { get; set; }
+    public Boolean ForceHttp1 { get; set; }
     public String TLSClientIdentifier
     {
         get => tlsClientIdentifier;
@@ -42,7 +52,7 @@ public class TlsClient : IDisposable
     };
 
     private string tlsClientIdentifier = ClientIdentifiers.Default;
-    private bool disposedValue;
+    private bool _isDisposed;
 
     public JsonSerializerSettings JsonSerializerSettings
     {
@@ -123,7 +133,8 @@ public class TlsClient : IDisposable
             DisableIPV4 = this.DisableIPV4,
             DisableIPV6 = this.DisableIPV6,
             LocalAddress = this.LocalAddress,
-            WithDebug = this.WithDebug
+            WithDebug = this.WithDebug,
+            ForceHttp1 = this.ForceHttp1
         };
         if (this.StreamOutput)
         {
@@ -133,19 +144,16 @@ public class TlsClient : IDisposable
         {
             ret.TimeoutSeconds = (int)this.Timeout.TotalSeconds;
         }
+        OnRequestCreating(ret);
         return ret;
     }
 
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposedValue)
+        if (!_isDisposed)
         {
-            if (disposing)
-            {
-                // TODO: 释放托管状态(托管对象)
-            }
             this.DestroySession(new DestroySessionInput { SessionId = this.SessionId });
-            disposedValue = true;
+            _isDisposed = true;
         }
     }
 

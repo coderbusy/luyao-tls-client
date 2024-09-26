@@ -38,15 +38,7 @@ public class TlsClientHttpMessageHandler : HttpMessageHandler
 
         if (!string.IsNullOrWhiteSpace(output.Body))
         {
-            var bytes = output.ReadBodyAsBase64(out var type);
-            if (!string.IsNullOrWhiteSpace(input.StreamOutputPath) && File.Exists(input.StreamOutputPath))
-            {
-                bytes = File.ReadAllBytes(input.StreamOutputPath);
-                File.Delete(input.StreamOutputPath);
-            }
-            var content = new ByteArrayContent(bytes);
-            response.Content = content;
-            content.Headers.ContentType = MediaTypeHeaderValue.Parse(type);
+            var content = response.Content = CreateContent(input, output);
             foreach (var h in output.Headers)
             {
                 var k = h.Key;
@@ -57,6 +49,22 @@ public class TlsClientHttpMessageHandler : HttpMessageHandler
         return response;
     }
 
+    protected virtual HttpContent CreateContent(RequestInput input, Response output)
+    {
+        var temp = input.StreamOutputPath;
+        var bytes = output.ReadBodyAsBase64(out var type);
+        HttpContent ret;
+        if (!string.IsNullOrWhiteSpace(temp) && File.Exists(temp))
+        {
+            ret = new TempFileHttpContent(temp!);
+        }
+        else
+        {
+            ret = new ByteArrayContent(bytes);
+        }
+        ret.Headers.ContentType = MediaTypeHeaderValue.Parse(type);
+        return ret;
+    }
 
     private void ReadHeaders(HttpHeaders headers, RequestInput input)
     {
