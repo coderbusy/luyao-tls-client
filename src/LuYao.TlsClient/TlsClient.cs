@@ -7,7 +7,7 @@ namespace LuYao.TlsClient;
 
 public class TlsClient : IDisposable
 {
-    public RequestCreatingEventHandler? RequestCreating;
+    public event RequestCreatingEventHandler? RequestCreating;
     protected virtual void OnRequestCreating(RequestInput input)
     {
         if (RequestCreating != null)
