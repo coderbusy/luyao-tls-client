@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace LuYao.TlsClient;
 
-public class TlsClientHttpClientHandler : HttpMessageHandler
+public class TlsClientHttpMessageHandler : HttpMessageHandler
 {
     public TlsClient TlsClient { get; }
 
-    public TlsClientHttpClientHandler(TlsClient tlsClient)
+    public TlsClientHttpMessageHandler(TlsClient tlsClient)
     {
         TlsClient = tlsClient ?? throw new ArgumentNullException(nameof(tlsClient));
     }
@@ -84,7 +84,7 @@ public class TlsClientHttpClientHandler : HttpMessageHandler
     {
         var input = this.TlsClient.CreateRequest();
         input.RequestMethod = request.Method.Method;
-        input.RequestUrl = request.RequestUri.ToString();
+        if (request.RequestUri != null) input.RequestUrl = request.RequestUri.ToString();
         input.IsByteRequest = true;
         input.IsByteResponse = true;
         ReadHeaders(request.Headers, input);
