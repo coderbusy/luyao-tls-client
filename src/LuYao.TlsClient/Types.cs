@@ -149,7 +149,7 @@ public class RequestInput
     public int TimeoutSeconds { get; set; }
 
     [JsonProperty("tlsClientIdentifier")]
-    public string TLSClientIdentifier { get; set; } = TLSClientIdentifiers.Default;
+    public string TLSClientIdentifier { get; set; } = ClientIdentifiers.Default;
 
     [JsonProperty("withDebug")]
     public bool WithDebug { get; set; }

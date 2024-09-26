@@ -1,6 +1,6 @@
 ﻿namespace LuYao.TlsClient;
 
-public static class TLSClientIdentifiers
+public static class ClientIdentifiers
 {
     public static string Default => Chrome_124;
     public const string Chrome_103 = "chrome_103";

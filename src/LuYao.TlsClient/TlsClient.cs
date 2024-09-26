@@ -41,7 +41,7 @@ public class TlsClient : IDisposable
         NullValueHandling = NullValueHandling.Ignore
     };
 
-    private string tlsClientIdentifier = TLSClientIdentifiers.Default;
+    private string tlsClientIdentifier = ClientIdentifiers.Default;
     private bool disposedValue;
 
     public JsonSerializerSettings JsonSerializerSettings
