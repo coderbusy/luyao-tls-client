@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuYao.TlsClient", "src\LuYa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{AA716A97-95E0-4763-9037-85ED7DAEC130}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuYao.TlsClient.Test", "src\LuYao.TlsClient.Test\LuYao.TlsClient.Test.csproj", "{D7988F7D-4A43-4BAB-ADB8-5DE118EEB493}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,10 +19,6 @@ Global
 		{BCB1E54E-7A99-487E-BC1E-FD4D3E5EB5C3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA716A97-95E0-4763-9037-85ED7DAEC130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA716A97-95E0-4763-9037-85ED7DAEC130}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7988F7D-4A43-4BAB-ADB8-5DE118EEB493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7988F7D-4A43-4BAB-ADB8-5DE118EEB493}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7988F7D-4A43-4BAB-ADB8-5DE118EEB493}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7988F7D-4A43-4BAB-ADB8-5DE118EEB493}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
