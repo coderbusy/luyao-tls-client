@@ -4,6 +4,10 @@
 		<TargetFrameworks>net45;net461;netstandard2.0;netstandard2.1;net6.0;net7.0;net8.0</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<LangVersion>12.0</LangVersion>
+		<!-- Enable AOT compatibility analysis for .NET 8+ -->
+		<IsAotCompatible Condition="'$(TargetFramework)' == 'net8.0'">true</IsAotCompatible>
+		<!-- Enable trimming compatibility analysis -->
+		<IsTrimmable Condition="'$(TargetFramework)' == 'net8.0' or '$(TargetFramework)' == 'net7.0' or '$(TargetFramework)' == 'net6.0'">true</IsTrimmable>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net45' or '$(TargetFramework)'=='net461'">
@@ -14,9 +18,11 @@
 		<Compile Include="..\..\build\Consts.cs" Link="Consts.cs" />
 	</ItemGroup>
 
-	<ItemGroup>
+	<!-- Newtonsoft.Json only for older frameworks that don't have System.Text.Json -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net461' or '$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
+	
 	<ItemGroup>
 		<None Include="runtimes\**" Pack="true" PackagePath="runtimes\" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>

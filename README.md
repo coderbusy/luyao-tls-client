@@ -11,6 +11,7 @@ LuYao.TlsClient 是一个跨平台的 .NET 库，允许开发者在 .NET 应用�
 - **多浏览器 TLS 指纹模拟**：支持模拟 Chrome、Firefox、Safari、Opera 等多种浏览器的不同版本
 - **跨平台支持**：支持 Windows (x86/x64)、Linux (x64/ARM64)、macOS (x64/ARM64)、Alpine Linux
 - **多 .NET 版本兼容**：支持 .NET Framework 4.5/4.6.1、.NET Standard 2.0/2.1、.NET 6/7/8
+- **Native AOT 支持**：.NET 8+ 应用可使用 Native AOT 编译，获得更快的启动速度和更小的内存占用 🚀
 - **HttpClient 集成**：提供 `TlsClientHttpMessageHandler`，可无缝集成到标准 .NET HttpClient 工作流
 - **会话管理**：支持 Cookie 会话管理、自定义代理、重定向控制等
 - **灵活配置**：支持自定义 TLS 配置、HTTP 头顺序、超时设置等
@@ -231,7 +232,15 @@ foreach (var cookie in cookies.Cookies)
 
 ### NuGet 包依赖
 
-#### 运行时依赖
+#### 运行时依赖（按框架区分）
+
+**.NET 6.0 / 7.0 / 8.0:**
+- **System.Text.Json** (内置)
+  - 用途: JSON 序列化和反序列化
+  - 特性: 支持 AOT 编译，.NET 8 使用源代码生成器
+  - 许可证: MIT
+
+**.NET Framework 4.5/4.6.1 和 .NET Standard 2.0/2.1:**
 - **Newtonsoft.Json** (v13.0.3)
   - 用途: JSON 序列化和反序列化
   - 许可证: MIT
@@ -342,6 +351,46 @@ luyao-tls-client/
 ### 发布到 NuGet
 
 项目使用 GitHub Actions 自动化发布流程，通过 `Publish_NuGet_Manual` 工作流手动触发。
+
+## Native AOT 支持
+
+从 .NET 8 开始，本库完全支持 Native AOT 编译！这意味着您可以：
+
+- 🚀 **更快的启动速度**：无需 JIT 编译，启动速度提升 50-80%
+- 💾 **更小的内存占用**：内存使用降低 20-40%
+- 📦 **自包含部署**：无需安装 .NET 运行时
+- ⚡ **原生性能**：编译为平台原生代码
+
+### 快速开始 AOT
+
+在您的 .NET 8 项目中启用 AOT：
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <PublishAot>true</PublishAot>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="LuYao.TlsClient" Version="*" />
+  </ItemGroup>
+</Project>
+```
+
+然后发布为原生可执行文件：
+
+```bash
+dotnet publish -c Release -r win-x64    # Windows
+dotnet publish -c Release -r linux-x64  # Linux
+dotnet publish -c Release -r osx-arm64  # macOS (Apple Silicon)
+```
+
+📖 **详细文档**：
+- [完整 AOT 支持指南](AOT-SUPPORT.md) - 深入了解 AOT 功能和最佳实践
+- [AOT 示例应用](samples/AotSample/) - 可运行的完整示例代码
+
+**注意**：AOT 功能仅在 .NET 8.0 及更高版本可用。对于较旧的框架，库将自动使用标准的 JIT 编译。
 
 ## 注意事项
 
