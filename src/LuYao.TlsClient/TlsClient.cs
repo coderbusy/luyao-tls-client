@@ -27,6 +27,7 @@ public class TlsClient : IDisposable
     public TimeSpan Timeout { get; set; } = TimeSpan.Zero;
     public Boolean WithDebug { get; set; }
     public Boolean ForceHttp1 { get; set; }
+    public Boolean DisableHttp3 { get; set; }
     public String TLSClientIdentifier
     {
         get => tlsClientIdentifier;
@@ -134,7 +135,8 @@ public class TlsClient : IDisposable
             DisableIPV6 = this.DisableIPV6,
             LocalAddress = this.LocalAddress,
             WithDebug = this.WithDebug,
-            ForceHttp1 = this.ForceHttp1
+            ForceHttp1 = this.ForceHttp1,
+            DisableHttp3 = this.DisableHttp3
         };
         if (this.StreamOutput)
         {
