@@ -2,7 +2,7 @@
 
 public static class ClientIdentifiers
 {
-    public static string Default => Chrome_124;
+    public static string Default => Chrome_133;
     public const string Chrome_103 = "chrome_103";
     public const string Chrome_104 = "chrome_104";
     public const string Chrome_105 = "chrome_105";
@@ -18,18 +18,32 @@ public static class ClientIdentifiers
     public const string Chrome_117 = "chrome_117";
     public const string Chrome_120 = "chrome_120";
     public const string Chrome_124 = "chrome_124";
+    public const string Chrome_130_PSK = "chrome_130_PSK";
+    public const string Chrome_131 = "chrome_131";
+    public const string Chrome_131_PSK = "chrome_131_PSK";
+    public const string Chrome_133 = "chrome_133";
+    public const string Chrome_133_PSK = "chrome_133_PSK";
     public const string Safari_15_6_1 = "safari_15_6_1";
     public const string Safari_16_0 = "safari_16_0";
     public const string Safari_Ipad_15_6 = "safari_ipad_15_6";
     public const string Safari_IOS_15_5 = "safari_ios_15_5";
     public const string Safari_IOS_15_6 = "safari_ios_15_6";
     public const string Safari_IOS_16_0 = "safari_ios_16_0";
+    public const string Safari_IOS_17_0 = "safari_ios_17_0";
+    public const string Safari_IOS_18_0 = "safari_ios_18_0";
+    public const string Safari_IOS_18_5 = "safari_ios_18_5";
     public const string Firefox_102 = "firefox_102";
     public const string Firefox_104 = "firefox_104";
     public const string Firefox_105 = "firefox_105";
     public const string Firefox_106 = "firefox_106";
     public const string Firefox_108 = "firefox_108";
     public const string Firefox_110 = "firefox_110";
+    public const string Firefox_117 = "firefox_117";
+    public const string Firefox_120 = "firefox_120";
+    public const string Firefox_123 = "firefox_123";
+    public const string Firefox_132 = "firefox_132";
+    public const string Firefox_133 = "firefox_133";
+    public const string Firefox_135 = "firefox_135";
     public const string Opera_89 = "opera_89";
     public const string Opera_90 = "opera_90";
     public const string Opera_91 = "opera_91";
@@ -39,6 +53,9 @@ public static class ClientIdentifiers
     public const string NikeAndroidMobile = "nike_android_mobile";
     public const string CloudflareCustom = "cloudscraper";
     public const string MMSIos = "mms_ios";
+    public const string MMSIos1 = "mms_ios_1";
+    public const string MMSIos2 = "mms_ios_2";
+    public const string MMSIos3 = "mms_ios_3";
     public const string MeshIos = "mesh_ios";
     public const string MeshIos1 = "mesh_ios_1";
     public const string MeshIos2 = "mesh_ios_2";
