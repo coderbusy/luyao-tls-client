@@ -232,7 +232,15 @@ foreach (var cookie in cookies.Cookies)
 
 ### NuGet 包依赖
 
-#### 运行时依赖
+#### 运行时依赖（按框架区分）
+
+**.NET 6.0 / 7.0 / 8.0:**
+- **System.Text.Json** (内置)
+  - 用途: JSON 序列化和反序列化
+  - 特性: 支持 AOT 编译，.NET 8 使用源代码生成器
+  - 许可证: MIT
+
+**.NET Framework 4.5/4.6.1 和 .NET Standard 2.0/2.1:**
 - **Newtonsoft.Json** (v13.0.3)
   - 用途: JSON 序列化和反序列化
   - 许可证: MIT

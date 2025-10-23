@@ -25,10 +25,13 @@ LuYao.TlsClient achieves AOT compatibility through:
 
 ### Automatic Serialization Selection
 
-- **For .NET 8+**: System.Text.Json with source generation (AOT-compatible) is used by default
-- **For .NET 6/7**: System.Text.Json without source generation is used by default
-- **For older frameworks**: Newtonsoft.Json is used (only option available)
-- **Override**: You can force Newtonsoft.Json usage on any framework by setting `UseSystemTextJson = false`
+The library automatically selects the best JSON serializer based on your target framework:
+
+- **For .NET 8+**: System.Text.Json with source generation (AOT-compatible)
+- **For .NET 6/7**: System.Text.Json (AOT-compatible, partial source generation support)
+- **For older frameworks (.NET Framework, .NET Standard)**: Newtonsoft.Json
+
+This selection happens at **compile time** through conditional compilation, ensuring zero overhead and optimal performance for each framework.
 
 ## Usage
 
@@ -122,32 +125,41 @@ For smaller executable sizes, add these properties:
 </PropertyGroup>
 ```
 
-## Switching Between JSON Serializers
+## JSON Serialization
 
-### Using System.Text.Json (Default for .NET 6+)
+The library uses different JSON serializers based on your target framework:
+
+### .NET 6/7/8 - System.Text.Json
+
+For modern frameworks, the library automatically uses System.Text.Json. You can configure serialization options:
 
 ```csharp
 var client = new TlsClient
 {
-    // System.Text.Json is used by default in .NET 6+
-    UseSystemTextJson = true  // This is the default
+    SystemTextJsonOptions = new System.Text.Json.JsonSerializerOptions
+    {
+        // Custom System.Text.Json settings
+        PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
+    }
 };
 ```
 
-### Using Newtonsoft.Json (Compatibility Mode)
+### Older Frameworks - Newtonsoft.Json
+
+For .NET Framework and .NET Standard, the library uses Newtonsoft.Json:
 
 ```csharp
 var client = new TlsClient
 {
-    // Switch to Newtonsoft.Json if needed
-    UseSystemTextJson = false,
     JsonSerializerSettings = new Newtonsoft.Json.JsonSerializerSettings
     {
-        // Your custom Newtonsoft.Json settings
+        // Custom Newtonsoft.Json settings
         NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
     }
 };
 ```
+
+**Note**: The serializer selection happens at **compile time**, not runtime. This ensures optimal performance and eliminates unnecessary dependencies for modern frameworks.
 
 ## HttpClient Integration with AOT
 
@@ -196,9 +208,9 @@ All custom TLS configuration types are pre-registered for AOT serialization. If 
 
 All existing code continues to work without changes:
 
-- **Older frameworks** (.NET Framework, .NET Standard, .NET 6/7): Continue using Newtonsoft.Json
-- **Existing .NET 8+ apps**: Can continue using Newtonsoft.Json by setting `UseSystemTextJson = false`
-- **New .NET 8+ apps**: Automatically benefit from AOT support with System.Text.Json
+- **Older frameworks** (.NET Framework, .NET Standard): Use Newtonsoft.Json automatically
+- **.NET 6/7/8**: Use System.Text.Json automatically for better performance and AOT support
+- **No breaking changes**: The serializer selection is transparent and happens at compile time
 
 ## Troubleshooting
 
@@ -212,10 +224,9 @@ All existing code continues to work without changes:
 
 ### Issue: Serialization differences between Newtonsoft.Json and System.Text.Json
 
-**Solution**: System.Text.Json has slightly different behavior than Newtonsoft.Json:
-- Property naming: Use `JsonSerializerOptions` to configure
-- Date handling: Different default formats
-- For compatibility, set `UseSystemTextJson = false`
+**Solution**: The library handles the serialization differences internally. Both serializers use camelCase property naming by default. If you need custom serialization behavior, configure the appropriate options for your target framework:
+- **.NET 6+**: Use `SystemTextJsonOptions` property
+- **Older frameworks**: Use `JsonSerializerSettings` property
 
 ### Issue: Larger executable size than expected
 

@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+#if !NET6_0_OR_GREATER
+using Newtonsoft.Json;
+#else
+using System.Text.Json;
+#endif
 
 namespace LuYao.TlsClient;
 
@@ -46,10 +48,19 @@ internal class CStringMarshaler : ICustomMarshaler
         Marshal.WriteByte(ptr, utf8Bytes.Length, 0);
         return lastIntPtr = ptr;
     }
+
+#if !NET6_0_OR_GREATER
     private static JsonSerializerSettings settings = new JsonSerializerSettings
     {
         Error = static (sender, args) => args.ErrorContext.Handled = true
     };
+#else
+    private static JsonSerializerOptions settings = new JsonSerializerOptions
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+#endif
+
     public object MarshalNativeToManaged(IntPtr pNativeData)
     {
         if (pNativeData == IntPtr.Zero)
@@ -67,7 +78,19 @@ internal class CStringMarshaler : ICustomMarshaler
         var str = Encoding.UTF8.GetString(bytes.ToArray());
         if (str.StartsWith("{") && str.EndsWith("}") && str.Contains("\"id\""))
         {
+#if !NET6_0_OR_GREATER
             var response = JsonConvert.DeserializeObject<ResponseBase>(str, settings);
+#else
+            ResponseBase? response = null;
+            try
+            {
+                response = JsonSerializer.Deserialize<ResponseBase>(str, settings);
+            }
+            catch
+            {
+                // Ignore deserialization errors
+            }
+#endif
             if (response != null && !string.IsNullOrWhiteSpace(response.Id))
             {
                 NativeMethods.FreeMemory(response.Id);

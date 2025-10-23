@@ -11,10 +11,10 @@
 #### 1. JSON 序列化迁移
 - **问题**：原项目使用 Newtonsoft.Json，该库依赖反射，不支持 AOT
 - **解决方案**：
-  - 为 .NET 8+ 添加 System.Text.Json 支持，使用源代码生成器（Source Generator）
+  - 为 .NET 6/7/8 使用 System.Text.Json，.NET 8+ 使用源代码生成器（Source Generator）
   - 创建 `TlsClientJsonContext` 类，预先注册所有序列化类型
-  - 保持向后兼容：旧版本框架继续使用 Newtonsoft.Json
-  - 提供运行时切换选项（`UseSystemTextJson` 属性）
+  - 通过条件编译实现：.NET 6+ 仅引用 System.Text.Json，旧框架仅引用 Newtonsoft.Json
+  - 完全消除了运行时开销，在编译时选择最佳序列化器
 
 #### 2. 项目配置更新
 - 为 .NET 8 添加 `IsAotCompatible=true` 标记
@@ -65,10 +65,10 @@ After comprehensive analysis and implementation, **the LuYao.TlsClient project i
 #### 1. JSON Serialization Migration
 - **Problem**: The project used Newtonsoft.Json, which relies on reflection and doesn't support AOT
 - **Solution**:
-  - Added System.Text.Json support for .NET 8+ using Source Generators
+  - Use System.Text.Json for .NET 6/7/8, with Source Generator for .NET 8+
   - Created `TlsClientJsonContext` class to pre-register all serialization types
-  - Maintained backward compatibility: older frameworks continue using Newtonsoft.Json
-  - Provided runtime switch option (`UseSystemTextJson` property)
+  - Conditional compilation: .NET 6+ only references System.Text.Json, older frameworks only reference Newtonsoft.Json
+  - Completely eliminated runtime overhead by selecting the best serializer at compile time
 
 #### 2. Project Configuration Updates
 - Added `IsAotCompatible=true` marker for .NET 8
@@ -149,8 +149,9 @@ var client = new TlsClient();
 client.TLSClientIdentifier = ClientIdentifiers.Chrome_124;
 var response = client.Request(request);
 
-// Optional: Force Newtonsoft.Json (for compatibility)
-client.UseSystemTextJson = false;
+// JSON serializer is automatically selected at compile time
+// .NET 6+ uses System.Text.Json
+// Older frameworks use Newtonsoft.Json
 ```
 
 ### Usage Examples
