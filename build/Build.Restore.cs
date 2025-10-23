@@ -58,7 +58,7 @@ partial class Build
             var lib = dir / map.Directory / "native" / map.Format.Replace("${name}", "tls-client").Replace("${ext}", ext);
             if (!lib.FileExists() || lib.GetFileHash() != hash)
             {
-                cache.Copy(lib);
+                cache.Copy(lib, ExistsPolicy.FileOverwrite);
             }
         }
     }
