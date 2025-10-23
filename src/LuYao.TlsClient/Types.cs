@@ -76,6 +76,9 @@ public class RequestInput
     [JsonProperty("forceHttp1")]
     public bool ForceHttp1 { get; set; }
 
+    [JsonProperty("disableHttp3")]
+    public bool DisableHttp3 { get; set; }
+
     [JsonProperty("headerOrder")]
     public List<string> HeaderOrder { get; set; } = new List<string>();
 
@@ -166,11 +169,14 @@ public class RequestInput
 
 public class CustomTlsClient
 {
-    [JsonProperty("certCompressionAlgo")]
-    public string CertCompressionAlgo { get; set; }
+    [JsonProperty("certCompressionAlgos")]
+    public List<string> CertCompressionAlgos { get; set; }
 
     [JsonProperty("connectionFlow")]
     public uint ConnectionFlow { get; set; }
+
+    [JsonProperty("recordSizeLimit")]
+    public ushort RecordSizeLimit { get; set; }
 
     [JsonProperty("h2Settings")]
     public Dictionary<string, uint> H2Settings { get; set; }
@@ -296,6 +302,12 @@ public class Cookie
 
     [JsonProperty("value")]
     public string Value { get; set; }
+
+    [JsonProperty("secure")]
+    public bool Secure { get; set; }
+
+    [JsonProperty("httpOnly")]
+    public bool HttpOnly { get; set; }
 }
 
 public class Response : ResponseBase
