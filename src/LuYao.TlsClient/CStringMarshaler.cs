@@ -38,7 +38,8 @@ internal static class CStringMarshaler
 #if !NET6_0_OR_GREATER
     private static JsonSerializerSettings settings = new JsonSerializerSettings
     {
-        Error = static (sender, args) => args.ErrorContext.Handled = true
+        Error = static (sender, args) => args.ErrorContext.Handled = true,
+        NullValueHandling = NullValueHandling.Ignore
     };
 #endif
 
@@ -46,6 +47,38 @@ internal static class CStringMarshaler
     [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "This is a fallback path for ResponseBase parsing. Primary types use source generation in TlsClient.")]
     [UnconditionalSuppressMessage("AOT", "IL3050", Justification = "This is a fallback path for ResponseBase parsing. Primary types use source generation in TlsClient.")]
 #endif
+    private static ResponseBase? TryDeserializeResponseBase(string str)
+    {
+#if !NET6_0_OR_GREATER
+        return JsonConvert.DeserializeObject<ResponseBase>(str, settings);
+#elif NET8_0_OR_GREATER
+        try
+        {
+            // Try to use source-generated deserialization first
+            return JsonSerializer.Deserialize(str, TlsClientJsonContext.Default.ResponseBase);
+        }
+        catch
+        {
+            // Ignore deserialization errors - this is just for memory cleanup
+            return null;
+        }
+#else
+        try
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            return JsonSerializer.Deserialize<ResponseBase>(str, options);
+        }
+        catch
+        {
+            // Ignore deserialization errors - this is just for memory cleanup
+            return null;
+        }
+#endif
+    }
+
     /// <summary>
     /// Marshals a native UTF-8 C-string to a managed string.
     /// Also handles automatic memory cleanup for response IDs.
@@ -71,34 +104,7 @@ internal static class CStringMarshaler
         // Handle automatic memory cleanup for responses with an ID
         if (str.StartsWith("{") && str.EndsWith("}") && str.Contains("\"id\""))
         {
-#if !NET6_0_OR_GREATER
-            var response = JsonConvert.DeserializeObject<ResponseBase>(str, settings);
-#elif NET8_0_OR_GREATER
-            ResponseBase? response = null;
-            try
-            {
-                // Try to use source-generated deserialization first
-                response = JsonSerializer.Deserialize(str, TlsClientJsonContext.Default.ResponseBase);
-            }
-            catch
-            {
-                // Ignore deserialization errors - this is just for memory cleanup
-            }
-#else
-            ResponseBase? response = null;
-            try
-            {
-                var settings = new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-                response = JsonSerializer.Deserialize<ResponseBase>(str, settings);
-            }
-            catch
-            {
-                // Ignore deserialization errors - this is just for memory cleanup
-            }
-#endif
+            var response = TryDeserializeResponseBase(str);
             if (response != null && !string.IsNullOrWhiteSpace(response.Id))
             {
                 NativeMethods.FreeMemory(response.Id);
