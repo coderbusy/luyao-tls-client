@@ -18,7 +18,7 @@ class Program
         Console.WriteLine();
 
         // Parse command line arguments
-        var url = args.Length > 0 ? args[0] : "https://www.example.com";
+        var url = args.Length > 0 ? args[0] : "https://www.coderbusy.com/";
         var verbose = args.Any(a => a == "-v" || a == "--verbose");
 
         if (verbose)
