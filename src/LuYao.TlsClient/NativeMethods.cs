@@ -17,37 +17,113 @@ public static partial class NativeMethods
     func request(requestParams *C.char) *C.char{}
      */
 
+    // Low-level P/Invoke declarations that return IntPtr for AOT compatibility
     [DllImport(Consts.DllName, EntryPoint = "freeMemory", CallingConvention = CallingConvention.Cdecl)]
-    [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CStringMarshaler))]
-    public static extern void FreeMemory(
-        [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CStringMarshaler))] string responseId
-    );
+    private static extern void FreeMemoryNative(IntPtr responseId);
 
     [DllImport(Consts.DllName, EntryPoint = "destroyAll", CallingConvention = CallingConvention.Cdecl)]
-    [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CStringMarshaler))]
-    public static extern string DestroyAll();
+    private static extern IntPtr DestroyAllNative();
 
     [DllImport(Consts.DllName, EntryPoint = "destroySession", CallingConvention = CallingConvention.Cdecl)]
-    [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CStringMarshaler))]
-    public static extern string DestroySession(
-        [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CStringMarshaler))] string destroySessionParams
-    );
+    private static extern IntPtr DestroySessionNative(IntPtr destroySessionParams);
 
     [DllImport(Consts.DllName, EntryPoint = "getCookiesFromSession", CallingConvention = CallingConvention.Cdecl)]
-    [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CStringMarshaler))]
-    public static extern string GetCookiesFromSession(
-        [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CStringMarshaler))] string getCookiesParams
-    );
+    private static extern IntPtr GetCookiesFromSessionNative(IntPtr getCookiesParams);
 
     [DllImport(Consts.DllName, EntryPoint = "addCookiesToSession", CallingConvention = CallingConvention.Cdecl)]
-    [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CStringMarshaler))]
-    public static extern string AddCookiesToSession(
-        [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CStringMarshaler))] string addCookiesParams
-    );
+    private static extern IntPtr AddCookiesToSessionNative(IntPtr addCookiesParams);
 
     [DllImport(Consts.DllName, EntryPoint = "request", CallingConvention = CallingConvention.Cdecl)]
-    [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CStringMarshaler))]
-    public static extern string Request(
-        [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CStringMarshaler))] string requestParams
-    );
+    private static extern IntPtr RequestNative(IntPtr requestParams);
+
+    // Public wrapper methods that handle marshaling
+    public static void FreeMemory(string responseId)
+    {
+        IntPtr ptr = CStringMarshaler.ManagedToNative(responseId);
+        try
+        {
+            FreeMemoryNative(ptr);
+        }
+        finally
+        {
+            if (ptr != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(ptr);
+            }
+        }
+    }
+
+    public static string DestroyAll()
+    {
+        IntPtr resultPtr = DestroyAllNative();
+        return CStringMarshaler.NativeToManaged(resultPtr);
+    }
+
+    public static string DestroySession(string destroySessionParams)
+    {
+        IntPtr paramsPtr = CStringMarshaler.ManagedToNative(destroySessionParams);
+        try
+        {
+            IntPtr resultPtr = DestroySessionNative(paramsPtr);
+            return CStringMarshaler.NativeToManaged(resultPtr);
+        }
+        finally
+        {
+            if (paramsPtr != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(paramsPtr);
+            }
+        }
+    }
+
+    public static string GetCookiesFromSession(string getCookiesParams)
+    {
+        IntPtr paramsPtr = CStringMarshaler.ManagedToNative(getCookiesParams);
+        try
+        {
+            IntPtr resultPtr = GetCookiesFromSessionNative(paramsPtr);
+            return CStringMarshaler.NativeToManaged(resultPtr);
+        }
+        finally
+        {
+            if (paramsPtr != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(paramsPtr);
+            }
+        }
+    }
+
+    public static string AddCookiesToSession(string addCookiesParams)
+    {
+        IntPtr paramsPtr = CStringMarshaler.ManagedToNative(addCookiesParams);
+        try
+        {
+            IntPtr resultPtr = AddCookiesToSessionNative(paramsPtr);
+            return CStringMarshaler.NativeToManaged(resultPtr);
+        }
+        finally
+        {
+            if (paramsPtr != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(paramsPtr);
+            }
+        }
+    }
+
+    public static string Request(string requestParams)
+    {
+        IntPtr paramsPtr = CStringMarshaler.ManagedToNative(requestParams);
+        try
+        {
+            IntPtr resultPtr = RequestNative(paramsPtr);
+            return CStringMarshaler.NativeToManaged(resultPtr);
+        }
+        finally
+        {
+            if (paramsPtr != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(paramsPtr);
+            }
+        }
+    }
 }
