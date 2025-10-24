@@ -9,6 +9,7 @@ namespace LuYao.TlsClient;
 /// </summary>
 [JsonSerializable(typeof(RequestInput))]
 [JsonSerializable(typeof(Response))]
+[JsonSerializable(typeof(ResponseBase))]
 [JsonSerializable(typeof(DestroySessionInput))]
 [JsonSerializable(typeof(DestroyOutput))]
 [JsonSerializable(typeof(AddCookiesToSessionInput))]
