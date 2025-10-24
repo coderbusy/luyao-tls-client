@@ -8,6 +8,12 @@
 		<IsAotCompatible Condition="'$(TargetFramework)' == 'net8.0'">true</IsAotCompatible>
 		<!-- Enable trimming compatibility analysis -->
 		<IsTrimmable Condition="'$(TargetFramework)' == 'net8.0' or '$(TargetFramework)' == 'net7.0' or '$(TargetFramework)' == 'net6.0'">true</IsTrimmable>
+		<!-- NuGet Package Metadata -->
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://www.coderbusy.com/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/coderbusy/luyao-tls-client</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net45' or '$(TargetFramework)'=='net461'">
@@ -25,5 +31,10 @@
 	
 	<ItemGroup>
 		<None Include="runtimes\**" Pack="true" PackagePath="runtimes\" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+	
+	<!-- Include README.md in the NuGet package -->
+	<ItemGroup>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 </Project>
