@@ -391,6 +391,19 @@ public class RequestInput
 #endif
     public bool WithCustomCookieJar { get; set; }
 
+    [Obsolete("Use WithCustomCookieJar instead.")]
+#if !NET6_0_OR_GREATER
+    [JsonIgnore]
+#endif
+#if NET8_0_OR_GREATER
+    [JsonIgnore]
+#endif
+    public bool WithDefaultCookieJar
+    {
+        get => WithCustomCookieJar;
+        set => WithCustomCookieJar = value;
+    }
+
     #if !NET6_0_OR_GREATER
     [JsonProperty("withoutCookieJar")]
     #endif
