@@ -160,6 +160,22 @@ public class RequestInput
     public bool DisableHttp3 { get; set; }
 
     #if !NET6_0_OR_GREATER
+    [JsonProperty("disableSessionTickets")]
+    #endif
+#if NET8_0_OR_GREATER
+    [JsonPropertyName("disableSessionTickets")]
+#endif
+    public bool DisableSessionTickets { get; set; }
+
+    #if !NET6_0_OR_GREATER
+    [JsonProperty("withProtocolRacing")]
+    #endif
+#if NET8_0_OR_GREATER
+    [JsonPropertyName("withProtocolRacing")]
+#endif
+    public bool WithProtocolRacing { get; set; }
+
+    #if !NET6_0_OR_GREATER
     [JsonProperty("headerOrder")]
     #endif
 #if NET8_0_OR_GREATER
@@ -368,12 +384,12 @@ public class RequestInput
     public bool WithDebug { get; set; }
 
     #if !NET6_0_OR_GREATER
-    [JsonProperty("withDefaultCookieJar")]
+    [JsonProperty("withCustomCookieJar")]
     #endif
 #if NET8_0_OR_GREATER
-    [JsonPropertyName("withDefaultCookieJar")]
+    [JsonPropertyName("withCustomCookieJar")]
 #endif
-    public bool WithDefaultCookieJar { get; set; }
+    public bool WithCustomCookieJar { get; set; }
 
     #if !NET6_0_OR_GREATER
     [JsonProperty("withoutCookieJar")]
@@ -419,6 +435,38 @@ public class CustomTlsClient
     public ushort RecordSizeLimit { get; set; }
 
     #if !NET6_0_OR_GREATER
+    [JsonProperty("streamId")]
+    #endif
+#if NET8_0_OR_GREATER
+    [JsonPropertyName("streamId")]
+#endif
+    public uint StreamId { get; set; }
+
+    #if !NET6_0_OR_GREATER
+    [JsonProperty("h3PriorityParam")]
+    #endif
+#if NET8_0_OR_GREATER
+    [JsonPropertyName("h3PriorityParam")]
+#endif
+    public uint H3PriorityParam { get; set; }
+
+    #if !NET6_0_OR_GREATER
+    [JsonProperty("h3SendGreaseFrames")]
+    #endif
+#if NET8_0_OR_GREATER
+    [JsonPropertyName("h3SendGreaseFrames")]
+#endif
+    public bool H3SendGreaseFrames { get; set; }
+
+    #if !NET6_0_OR_GREATER
+    [JsonProperty("allowHttp")]
+    #endif
+#if NET8_0_OR_GREATER
+    [JsonPropertyName("allowHttp")]
+#endif
+    public bool AllowHttp { get; set; }
+
+    #if !NET6_0_OR_GREATER
     [JsonProperty("h2Settings")]
     #endif
 #if NET8_0_OR_GREATER
@@ -435,6 +483,30 @@ public class CustomTlsClient
     public List<string> H2SettingsOrder { get; set; }
 
     #if !NET6_0_OR_GREATER
+    [JsonProperty("h3Settings")]
+    #endif
+#if NET8_0_OR_GREATER
+    [JsonPropertyName("h3Settings")]
+#endif
+    public Dictionary<string, ulong> H3Settings { get; set; }
+
+    #if !NET6_0_OR_GREATER
+    [JsonProperty("h3SettingsOrder")]
+    #endif
+#if NET8_0_OR_GREATER
+    [JsonPropertyName("h3SettingsOrder")]
+#endif
+    public List<string> H3SettingsOrder { get; set; }
+
+    #if !NET6_0_OR_GREATER
+    [JsonProperty("h3PseudoHeaderOrder")]
+    #endif
+#if NET8_0_OR_GREATER
+    [JsonPropertyName("h3PseudoHeaderOrder")]
+#endif
+    public List<string> H3PseudoHeaderOrder { get; set; }
+
+    #if !NET6_0_OR_GREATER
     [JsonProperty("headerPriority")]
     #endif
 #if NET8_0_OR_GREATER
@@ -449,6 +521,14 @@ public class CustomTlsClient
     [JsonPropertyName("ja3String")]
 #endif
     public string Ja3String { get; set; }
+
+    #if !NET6_0_OR_GREATER
+    [JsonProperty("trustAnchorsPayload")]
+    #endif
+#if NET8_0_OR_GREATER
+    [JsonPropertyName("trustAnchorsPayload")]
+#endif
+    public string TrustAnchorsPayload { get; set; }
 
     #if !NET6_0_OR_GREATER
     [JsonProperty("keyShareCurves")]
